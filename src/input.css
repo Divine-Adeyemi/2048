@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #faf8ef; /* light beige background */
+  --color-empty: #cdc1b4;      /* empty cell color */
+  --color-font: #776e65;       /* text color */
+  --color-score: #bbada0;      /* scoreboard */
+  --color-button: #8f7a66;     /* button bg */
+
+  /* Tiles */
+  --color-stone-100: #eee4da;  /* tile 2 */
+  --color-stone-200: #ede0c8;  /* tile 4 */
+
+  --color-orange-300: #f2b179; /* tile 8 */
+  --color-orange-400: #f59563; /* tile 16 */
+  --color-orange-500: #f67c5f; /* tile 32 */
+  --color-orange-600: #f65e3b; /* tile 64 */
+
+  --color-yellow-300: #edcf72; /* tile 128 */
+  --color-yellow-400: #edcc61; /* tile 256 */
+  --color-yellow-500: #edc850; /* tile 512 */
+  --color-yellow-600: #edc53f; /* tile 1024 */
+  --color-yellow-700: #edc22e; /* tile 2048 */
+}
+/* styles.css (input file) */
+@layer components {
+  .tile {
+    @apply flex items-center justify-center font-bold rounded-lg transition-all;
+    aspect-ratio: 1 / 1;
+    font-size: clamp(1rem, 3vw, 2rem);
+  }
+
+  .bg-empty {
+    background-color: #cdc1b4;
+  }
+
+  .tile-2  { background-color: #eee4da; color: #776e65; }
+  .tile-4  { background-color: #ede0c8; color: #776e65; }
+  .tile-8  { background-color: #f2b179; color: #f9f6f2; }
+  .tile-16 { background-color: #f59563; color: #f9f6f2; }
+  .tile-32 { background-color: #f67c5f; color: #f9f6f2; }
+  .tile-64 { background-color: #f65e3b; color: #f9f6f2; }
+
+  .tile-128 { background-color: #edcf72; color: #f9f6f2; font-size: clamp(0.9rem, 2.5vw, 1.6rem); }
+  .tile-256 { background-color: #edcc61; color: #f9f6f2; font-size: clamp(0.9rem, 2.5vw, 1.6rem); }
+  .tile-512 { background-color: #edc850; color: #f9f6f2; font-size: clamp(0.9rem, 2.5vw, 1.6rem); }
+
+  .tile-1024 { background-color: #edc53f; color: #f9f6f2; font-size: clamp(0.8rem, 2.2vw, 1.4rem); }
+  .tile-2048 { background-color: #edc22e; color: #f9f6f2; font-size: clamp(0.8rem, 2.2vw, 1.4rem); }
+  .tile-new {
+    position: absolute;
+  width: 90px;
+  height: 90px;
+  transition: transform 0.15s ease-in-out;
+}
+@layer utilities {
+    @keyframes spawn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-spawn {
+      animation: spawn 150ms ease-out;
+    }
+    @keyframes pop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+      .animate-pop {
+        animation: pop 150ms ease-in-out;
+      }
+}
+
+
+
+  
