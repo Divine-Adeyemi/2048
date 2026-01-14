@@ -108,19 +108,13 @@ function moveTiles(e) {
             moveRight();
             moved = true;
             break;
-        default: return; // ignore other keys
+        default: return;
     }
+
     if (moved) {
-        spawnTile();
-        updateBoard();
-        if (isGameOver()) {
-            gameActive = false;
-            updateHighScore();
-            gameOverOverlay.classList.remove("hidden");
-        }
+        processGameTurn(); // Now using the shared helper
     }
 }
-
 tryAgainBtn.addEventListener("click", () => {
     resetGame();});
 
@@ -241,4 +235,70 @@ function slideAndMerge(line){
     
         return true; 
     }
+    // --- Mobile Touch Logic ---
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+    // Prevent default scrolling on the game area if needed
+    // e.preventDefault(); 
+}, { passive: false });
+
+// Capture the end point and calculate direction
+document.addEventListener('touchend', (e) => {
+    if (!gameActive) return;
+
+    let touchEndX = e.changedTouches[0].screenX;
+    let touchEndY = e.changedTouches[0].screenY;
+    
+    handleSwipe(touchStartX, touchStartY, touchEndX, touchEndY);
+});
+
+function handleSwipe(startX, startY, endX, endY) {
+    let diffX = endX - startX;
+    let diffY = endY - startY;
+    let moved = false;
+
+    // Threshold: Ignore tiny movements (taps/accidental jitters)
+    if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
+
+    // Determine Axis: Is the swipe more Horizontal or Vertical?
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        // Horizontal
+        if (diffX > 0) {
+            moveRight();
+            moved = true;
+        } else {
+            moveLeft();
+            moved = true;
+        }
+    } else {
+        // Vertical
+        if (diffY > 0) {
+            moveDown();
+            moved = true;
+        } else {
+            moveUp();
+            moved = true;
+        }
+    }
+
+    if (moved) {
+        processGameTurn();
+    }
+}
+    
+function processGameTurn() {
+    spawnTile();
+    updateBoard();
+    if (isGameOver()) {
+        gameActive = false;
+        updateHighScore();
+        gameOverOverlay.classList.remove("hidden");
+    }
+}
     
